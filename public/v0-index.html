@@ -1,0 +1,200 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Muktoverse - Early Access</title>
+    <meta
+      name="description"
+      content="An interactive portfolio website of Dewan Mukto, powered by AFrame.IO and WebVR. Explore in 3D!"
+    />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.7.1/dist/networked-aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+  </head>
+  <!--
+ACKNOWLEDGEMENTS:
+Aframe.io for the framework itself :: https://aframe.io/
+Hayden Lee for the basic networking template :: https://glitch.com/~networked-aframe
+Kevin Ngo for the basic 3D scene template :: https://glitch.com/~aframe-basic-guide-with-environment
+Lenr for inspiration :: https://lenr.gq/
+-->
+  <body>
+    
+    <!-- SCENE -->
+    <a-scene networked-scene="
+      room: basic;
+      debug: true;
+    ">
+      <!-- ASSETS -->
+      <a-assets>
+        <img
+          id="groundTexture"
+          src="https://cdn.aframe.io/a-painter/images/floor.jpg"
+        />
+        <img
+          id="skyTexture"
+          src="https://media.discordapp.net/attachments/997670845944168479/1041831275381665883/Picsart_22-11-13_21-08-15-386.png?width=871&height=610"
+        />
+        <img
+          id="boxTexture"
+          src="https://i.seadn.io/gae/A-GaHQdmGnbtnI-Znls_8WZm6FXrKUX7eDr2bhCfT3lqJ_N17n4uGV4WESnz1TcfxEFmm6Et-FK15QXT4a8l5buKn2IkYZbjMxjkjuA?auto=format&w=1920"
+        />
+        <img
+          id="muktoLogo"
+          src="https://media.discordapp.net/attachments/913805469016002581/1006344528812322856/muktodmi_logo_tp.png"
+        />
+
+        <!-- Templates -->
+
+        <!-- avatar -->
+        <template id="avatar-template">
+          <a-entity class="avatar">
+            <a-sphere class="head"
+              color="#5985ff"
+              scale="0.45 0.5 0.4"
+              random-color
+            ></a-sphere>
+            <a-entity class="face"
+              position="0 0.05 0"
+            >
+              <a-sphere class="eye"
+                color="#efefef"
+                position="0.16 0.1 -0.35"
+                scale="0.12 0.12 0.12"
+              >
+                <a-sphere class="pupil"
+                  color="#000"
+                  position="0 0 -1"
+                  scale="0.2 0.2 0.2"
+                ></a-sphere>
+              </a-sphere>
+              <a-sphere class="eye"
+                color="#efefef"
+                position="-0.16 0.1 -0.35"
+                scale="0.12 0.12 0.12"
+              >
+                <a-sphere class="pupil"
+                  color="#000"
+                  position="0 0 -1"
+                  scale="0.2 0.2 0.2"
+                ></a-sphere>
+              </a-sphere>
+            </a-entity>
+          </a-entity>
+        </template>
+        <!-- avatar -->
+      </a-assets>
+      <!-- ASSETS -->
+
+      <!-- PLAYER -->
+      <a-entity id="player"
+                camera
+                networked="template:#avatar-template;attachTemplateToLocal:false;"
+                position="0 1.6 0"
+                spawn-in-circle="radius:3"
+                wasd-controls
+                look-controls>
+        <a-sphere class="head"
+          visible="false"
+          random-color
+        ></a-sphere>
+      </a-entity>
+      <!-- PLAYER -->
+
+      <!-- SHAPES -->
+      <a-box
+        src="#boxTexture"
+        position="0 2 -5"
+        rotation="0 45 45"
+        scale="2 2 2"
+        animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true"
+        animation__mouseenter="property: scale; to: 2.3 2.3 2.3; dur: 300; startEvents: mouseenter"
+        animation__mouseleave="property: scale; to: 2 2 2; dur: 300; startEvents: mouseleave"
+      ></a-box>
+      <a-box
+        position="-1 10 -3"
+        rotation="0 45 0"
+        color="#ff0a45"
+        src="#muktoLogo"
+      ></a-box>
+      <a-sphere
+        position="10 1 -3"
+        radius="1.25"
+        color="#EF2D5E"
+        material="shader: flat; fog: false; transparency: true; wireframe: true; color: #ff0a45"
+      ></a-sphere>
+      <a-sphere position="0 0 0" radius="0.25" color="#FF0A45"></a-sphere>
+      <!-- SHAPES -->
+      
+      <!-- TEXT -->
+      <a-entity
+        text="value: Welcome to the Muktoverse; color: #FAFAFA; width: 5; anchor: align"
+        position="-1.9 0.2 -6"
+        scale="1.5 1.5 1.5"
+        animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true"
+        animation__mouseenter="property: scale; to: 2.3 2.3 2.3; dur: 300; startEvents: mouseenter"
+        animation__mouseleave="property: scale; to: 2 2 2; dur: 300; startEvents: mouseleave"
+      ></a-entity>
+      <a-entity
+        text="value: Early Access; color: #FF0A45; width: 5; anchor: align"
+        position="-1.9 0 -6"
+        scale="1.5 1.5 1.5"
+        animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true"
+        animation__mouseenter="property: scale; to: 2.3 2.3 2.3; dur: 300; startEvents: mouseenter"
+        animation__mouseleave="property: scale; to: 2 2 2; dur: 300; startEvents: mouseleave"
+      ></a-entity>
+      <a-entity
+        text="value: www.mukto.net; color: #FAFAFA; width: 5; anchor: align"
+        position="-0.9 0.2 -3"
+        scale="1.5 1.5 1.5"
+      ></a-entity>
+      <!-- TEXT -->
+
+      <!-- EXTRA -->
+      <a-sky
+        id="background"
+        src="#skyTexture"
+        theta-length="90"
+        radius="15"
+      ></a-sky>
+      <a-sky color="#0a0a0a"></a-sky>
+      <a-cylinder
+        id="ground"
+        src="#groundTexture"
+        radius="30"
+        height="0.1"
+      ></a-cylinder>
+      <a-camera>
+        <a-cursor color="#FF0A45"></a-cursor>
+      </a-camera>
+      <a-entity position="0 0 0"
+        geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
+        material="src: #grid; repeat: 10000 10000; transparent: true; metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;"></a-entity>
+      <a-entity id="particles" particle-system="preset: snow"></a-entity>
+      <!-- EXTRA -->
+    </a-scene>
+    <!-- SCENE -->
+    
+    <script>
+      var isMobile = AFRAME.utils.device.isMobile();
+      if (isMobile) {
+        var particles = document.getElementById('particles');
+        particles.parentNode.removeChild(particles); // no particles for mobile devices
+      }
+      NAF.schemas.add({
+        template: '#avatar-template',
+        components: [
+          'position',
+          'rotation',
+          {
+            selector: '.head',
+            component: 'material',
+            property: 'color'
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>
